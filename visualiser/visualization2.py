@@ -11,18 +11,19 @@ without creating a whole new figure. I also wanted to enable live update of inco
 
 
 class visulatization:
-    functions_name= []
-    functions = []
-    figures = []
-    axes = []
+    
     
     def __init__(self):
-       self.x_min = 0
-       self.x_max = 2
-       self.steps = 100
-       self.figure, axe = pyplot.subplots(1,1)
-       self.axes = [axe]
-       pyplot.ion()
+        self.x_min = 0
+        self.x_max = 2
+        self.steps = 100
+        self.figure, axe = pyplot.subplots(1,1)
+        self.axes = [axe]
+        pyplot.ion()
+        self.functions_name= []
+        self.functions = []
+        self.figures = []
+        self.axes = []
        
        
 
@@ -82,6 +83,8 @@ class visulatization:
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         for i in range(len(self.axes)):
+            if self.functions_name[i][0:4] == "data":
+                continue
             x,y = self.calculate(self.functions[i])
             #print(x)
             #print(y)
@@ -91,7 +94,9 @@ class visulatization:
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         #self.show()
-        """self.figure.canvas.draw()
+        
+        """
+        self.figure.canvas.draw()
         pyplot.draw()
         
         pyplot.pause(0.0001)
@@ -120,11 +125,35 @@ class visulatization:
         self.x_max = x
                 
         
-class bettter_visulatization(visulatization):
+class better_visulatization(visulatization):
+    hash_map_dataname_value = {}
     def __init__(self):
-        color ="red"
+        visulatization.__init__(self)
+        
 
-a = visulatization()
+    def draw_raw_data(self):
+        for key in self.hash_map_dataname_value:
+            i = self.functions_name.index(key)
+            self.axes[i].plot(self.hash_map_dataname_value[key][0],self.hash_map_dataname_value[key][1])
+            self.axes[i].set_title(self.functions_name[i])
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()        
+
+    def plot_data(self, x, y, data_name):
+        self.functions.append(lambda x: -1)
+        self.functions_name.append("data_"+data_name)
+        self.hash_map_dataname_value["data_"+data_name] = [x,y]
+        self.axes.append(self.figure.add_subplot())
+        self.draw()
+        self.draw_raw_data()
+        
+    def append_data(self, x, y, data_name):
+        self.hash_map_dataname_value["data_"+data_name][0].append(x)
+        self.hash_map_dataname_value["data_"+data_name][1].append(y)
+        self.draw_raw_data()
+
+
+a = better_visulatization()
 a.plot(lambda x: 3* np.pi * np.exp( -1* 5* np.sin(2*np.pi*x)  ), "weird sin exp func")
 a.show()
 """"for i in range(500):
@@ -137,6 +166,6 @@ a.plot(lambda x: 3*x, "3x")
 pyplot.pause(5)
 print("never left")
 a.plot(lambda x: x*500, "fck")
-time.sleep(6)
+pyplot.pause(5)
 
 
