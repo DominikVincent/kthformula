@@ -143,7 +143,7 @@ class better_visulatization(visulatization):
         self.functions.append(lambda x: -1)
         self.functions_name.append("data_"+data_name)
         self.hash_map_dataname_value["data_"+data_name] = [x,y]
-        self.axes.append(self.figure.add_subplot())
+        np.concatenate(self.axes, [self.figure.add_subplot()])
         self.draw()
         self.draw_raw_data()
         
@@ -158,14 +158,16 @@ a.plot(lambda x: 3* np.pi * np.exp( -1* 5* np.sin(2*np.pi*x)  ), "weird sin exp 
 a.show()
 """"for i in range(500):
     time.sleep(0.01)"""
-pyplot.pause(5)
+pyplot.pause(2)
 a.plot(lambda x: 3*x, "3x")
 
 """for i in range(500):
     time.sleep(0.01)"""
-pyplot.pause(5)
+pyplot.pause(2)
 print("never left")
 a.plot(lambda x: x*500, "fck")
+pyplot.pause(2)
+
+
+a.plot_data([0,1,2], [0,1,0], "kleien Zahl")
 pyplot.pause(5)
-
-
