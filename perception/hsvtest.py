@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 #cap = cv2.VideoCapture("Formula Student Spain 2015 Endurance- DHBW Engineering with the eSleek15.mp4")
-cap = cv2.VideoCapture("VID_20180619_175221224_HDR.mp4")
+cap = cv2.VideoCapture("Fluela video.mp4")
 
 i = 0
 while True:
@@ -23,11 +23,19 @@ while True:
 
     bit_or = cv2.bitwise_or(mask_blue, mask_yellow)
     res = cv2.bitwise_and(frame, frame, mask= bit_or)
-    cv2.imshow("frame", frame)
+
+    filter_median = cv2.GaussianBlur(res,(15,15),0) 
+    filter_gauss  = cv2.medianBlur(res,15)
+    filter_bil    = cv2.bilateralFilter(res,15,75,75)
+    #cv2.imshow("frame", frame)
     #cv2.imshow("gray", mask_yellow)
     #cv2.imshow("colorblue", res_blue)
     #cv2.imshow("coloryellow", res_yellow)
     cv2.imshow("color", res)
+    cv2.imshow("filter median", filter_median)
+    cv2.imshow("filter gausss", filter_gauss)
+    cv2.imshow("filter_bil",    filter_bil)
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
