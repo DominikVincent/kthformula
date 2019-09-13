@@ -2,23 +2,58 @@ import numpy as np
 import cv2
 import time
 
-#cap = cv2.VideoCapture("Formula Student Spain 2015 Endurance- DHBW Engineering with the eSleek15.mp4")
-cap = cv2.VideoCapture("video_long.mp4")
 
-i = 0
+def nothing(x):
+    pass
+
+def change_i(x):
+    i = x
+    return
+
+#cap = cv2.VideoCapture("Formula Student Spain 2015 Endurance- DHBW Engineering with the eSleek15.mp4")
+cap = cv2.VideoCapture("video_hdr.mp4")
+sliders = cv2.namedWindow("Tracking")
+
+cv2.createTrackbar("LH", "Tracking", 0,   360, nothing)
+cv2.createTrackbar("LS", "Tracking", 0,   100, nothing)
+cv2.createTrackbar("LV", "Tracking", 0,   100, nothing)
+cv2.createTrackbar("UH", "Tracking", 360, 360, nothing)
+cv2.createTrackbar("US", "Tracking", 100, 100, nothing)
+cv2.createTrackbar("UV", "Tracking", 100, 100, nothing)
+cv2.createTrackbar("continue?", "Tracking", 1, 1, nothing)
+i = 1
 while True:
-    i +=1
-    ret, frame = cap.read()
-    if not ret:
-        cap.release()
-        cv2.destroyAllWindows()
-        exit()
+
+    l_h = cv2.getTrackbarPos("LH", "Tracking")
+    l_s = cv2.getTrackbarPos("LS", "Tracking")
+    l_v = cv2.getTrackbarPos("LV", "Tracking")
+
+    u_h = cv2.getTrackbarPos("UH", "Tracking")
+    u_s = cv2.getTrackbarPos("US", "Tracking")
+    u_v = cv2.getTrackbarPos("UV", "Tracking")
+
+    i = cv2.getTrackbarPos("continue?", "Tracking")
+
+    lower_blue = np.array([ l_h/2, l_s *2.55, l_v*2.55])
+    upper_blue = np.array([ u_h/2, u_s *2.55, u_v*2.55])
+
+
+
+    if i == 1:
+        ret, frame = cap.read()
+        if not ret:
+            cap.release()
+            cv2.destroyAllWindows()
+            exit()
+            
+    #i +=1
+    
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     #find blue things
     #lower_blue = np.array([140 /2, 10  *2.55, 40 *2.55])
     #upper_blue = np.array([260 /2, 100 *2.55, 100 *2,55])
-    lower_blue = np.array([200 /2, 30  *2.55, 15 *2.55])
-    upper_blue = np.array([250 /2, 100 *2.55, 100 *2,55])
+    #lower_blue = np.array([200 /2, 30  *2.55, 15 *2.55])
+    #upper_blue = np.array([260 /2, 100 *2.55, 100 *2,55])
     mask_blue = cv2.inRange(gray, lower_blue, upper_blue)
     res_blue = cv2.bitwise_and(frame,frame, mask= mask_blue)
 
@@ -36,13 +71,13 @@ while True:
     #filter_bil    = cv2.bilateralFilter(res,15,75,75)
     
     
-    frame = cv2.resize(frame, (960,540))
+    frame = cv2.resize(frame, (720,480))
     res = cv2.resize(res, (960,540))
     #filter_median = cv2.resize(filter_median, (960,540))
     #filter_gauss = cv2.resize(filter_gauss, (960,540))
     #filter_bil = cv2.resize(filter_bil, (960,540))
-    res_blue = cv2.resize(res_blue, (960, 540))
-    res_yellow = cv2.resize(res_yellow, (960,540))
+    res_blue = cv2.resize(res_blue, (720, 480))
+    #res_yellow = cv2.resize(res_yellow, (720,480))
     
     cv2.imshow("frame", frame)
     #cv2.imshow("color", res)
@@ -50,12 +85,10 @@ while True:
     #cv2.imshow("filter gausss", filter_gauss)
     #cv2.imshow("filter_bil",    filter_bil)
     #cv2.imshow("gray", mask_yellow)
-    cv2.imshow("colorblue", res_blue)
+    #cv2.imshow("colorblue", res_blue)
     cv2.imshow("coloryellow", res_yellow)
     
-    if i>= 200:
-        pass
-        #time.sleep(2)
+    
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
