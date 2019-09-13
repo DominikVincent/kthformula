@@ -1,0 +1,56 @@
+How did i solve the task.
+I started with learning anything about computer vision, because I had never done it before. Therefore followed I
+the basic tutorial of opencv. The Documentary was quite good, thats why you were able to look things, which were
+mentioned, but not completly explained, up. The idea for me was to get enough knowledge about opencv 
+so that i would be able to play a video and atleast remove the irrelevant data. 
+This worked quite good.
+starting with thresholding and colorfiltering. 
+Later on I had ideas to combine it with motion detection, because a car moves.
+blurring, smoothing and filtering to enhance the end product
+morphological - dilationa and errosion
+and haar cascade. However this approch led to a dead end, because i had limited amout of pictures.
+Thats why i settled with the mentioned ideas even though I thought of using cornerdetection and feature matching.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1a) Content 20 points
+2)All drivers must be able to exit to the side of the vehicle in less than 5 s with the driver in
+the fully seated position, hands in the driving position on the connected steering wheel (in
+all possible steering positions) and wearing the required driver equipment as in T13.3. The
+egress time will stop when the driver has both feet on the ground.
+--> a) no less than 5s, b) yes next to the car c) no with steeringwheel
+
+3) After technical inspection, the only modifications permitted to the vehicle are:
+...
+Adjustment of winglet angles, but not the position of the complete aerodynamic device
+in relation to the vehicle
+
+so yes
+
+4) none of above. car with driver has to withstand 60° tilt with no leakage. 
+lateral g is probably something like tan(6/10)
+
+5)The officials will provide a standardized data logger that must be installed in any DV during
+the competition. Further specifications for the data logger and required hardware and software
+interfaces can be found in the competition handbook.
+
+6)It is prohibited to change parameters, send commands or make any software changes by
+wireless communication. Receiving information from the vehicle via one-way-telemetry is
+allowed. During dynamic events, wireless communication may be limited and an uninterfered
+and reliable wireless connection is not guaranteed by the officials
