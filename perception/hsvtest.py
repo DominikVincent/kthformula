@@ -10,8 +10,18 @@ def change_i(x):
     i = x
     return
 
+def get_contours(frame):
+    contours, hierachie = cv2.findContours(frame, mode=cv2.RETR_LIST, method=cv2.CHAIN_APPROX_SIMPLE)
+    print(contours)
+    print(hierachie)
+    return contours, hierachie
+
+def draw_contours(frame, contours):
+    for cnt in contours:
+        cv2.drawContours(frame, contours,0,(0,255,0),2)
+    
 #cap = cv2.VideoCapture("Formula Student Spain 2015 Endurance- DHBW Engineering with the eSleek15.mp4")
-cap = cv2.VideoCapture("video_hdr.mp4")
+cap = cv2.VideoCapture("video.mp4")
 sliders = cv2.namedWindow("Tracking")
 
 cv2.createTrackbar("LH", "Tracking", 0,   360, nothing)
@@ -62,9 +72,12 @@ while True:
     upper_yellow = np.array([65 /2, 100*2.55,100*2.55])
     mask_yellow = cv2.inRange(gray, lower_yellow, upper_yellow)
     res_yellow = cv2.bitwise_and(frame,frame, mask= mask_yellow)
-
     bit_or = cv2.bitwise_or(mask_blue, mask_yellow)
     res = cv2.bitwise_and(frame, frame, mask= bit_or)
+
+    cont, hier = get_contours(mask_yellow)
+    draw_contours(frame, cont)
+    draw_contours(mask_yellow, cont)
 
     #filter_median = cv2.GaussianBlur(res,(15,15),0) 
     #filter_gauss  = cv2.medianBlur(res,15)
@@ -84,9 +97,9 @@ while True:
     #cv2.imshow("filter median", filter_median)
     #cv2.imshow("filter gausss", filter_gauss)
     #cv2.imshow("filter_bil",    filter_bil)
-    #cv2.imshow("gray", mask_yellow)
+    cv2.imshow("gray", mask_yellow)
     #cv2.imshow("colorblue", res_blue)
-    cv2.imshow("coloryellow", res_yellow)
+    #cv2.imshow("coloryellow", res_yellow)
     
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
